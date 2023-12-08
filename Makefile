@@ -6,7 +6,9 @@ ADMIN_PASSWORD := admin
 PYTHON := $(PYTHON)
 PIP := $(PYTHON) -m pip
 
-fresh: clean-db install migrate admin ## Clean everything, install dependencies, run migrations and create admin user
+.PHONY: fresh install freeze mg mm migrations dev shell cs superuser admin clean-db clean-mg clean black help
+
+fresh: clean-db migrations admin ## Clean everything, install dependencies, run migrations and create admin user
 
 install: ## Install dependencies
 	$(PIP) install -r requirements.txt
@@ -14,11 +16,19 @@ install: ## Install dependencies
 freeze: ## Freeze dependencies
 	$(PIP) freeze > requirements.txt
 
-migrate: ## Run migrations
+mg: ## Run migrations
 	$(PYTHON) manage.py migrate --settings=$(SETTINGS)
 
 mm: ## Make migrations for a specific app
 	$(PYTHON) manage.py makemigrations $(app) --settings=$(SETTINGS)
+
+migrations: ## Run thorough migrations of all available apps sequentially
+	$(PYTHON) manage.py makemigrations --settings=$(SETTINGS)
+	$(PYTHON) manage.py migrate --settings=$(SETTINGS)
+	make mm app=util
+	make mm app=accommodation
+	make mm app=review
+	make mg
 
 dev: ## Run development server
 	$(PYTHON) manage.py runserver --settings=backend.settings.dev
@@ -44,10 +54,10 @@ clean-db: ## Clean database, media and static files
 	rm -rf static
 	rm -rf db.sqlite3
 
-clean-migrations: ## Clean migrations
+clean-mg: ## Clean migrations
 	rm -rf **/migrations
 
-clean: clean-db clean-migrations ## Clean everything
+clean: clean-db clean-mg ## Clean db related files and migration files
 
 black: ## Run black
 	black .

@@ -5,24 +5,24 @@ DEBUG = True
 
 # SECURITY WARNING: don't include unknown hosts
 ALLOWED_HOSTS = [
-	"localhost",
-	"host.docker.internal",
-	"127.0.0.1",
+    "localhost",
+    "host.docker.internal",
+    "127.0.0.1",
 ]
 
 # SECURITY WARNING: don't include unknown hosts
 CORS_ALLOWED_ORIGIN_REGEXES = [
-	r"^http:\/\/(localhost|host\.docker\.internal|127\.0\.0\.1)\:8080$",
+    r"^http:\/\/(localhost|host\.docker\.internal|127\.0\.0\.1)\:8080$",
 ]
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-	"default": {
-		"ENGINE": "django.db.backends.sqlite3",
-		"NAME": BASE_DIR / "db.sqlite3",
-	}
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
 }
 
 # Email Server Configuration

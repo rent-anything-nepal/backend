@@ -6,50 +6,46 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class Review(Modifiers):
-	rating = models.FloatField(
-		null=True, help_text="Rating should be between 0.0 and 5.0",
-		validators=[MinValueValidator(0.0), MaxValueValidator(5.0), divisible_by_point_five]
-	)
-	comment = models.TextField()
-	post_anonymously = models.BooleanField(default=False)
+    comment = models.TextField()
+    post_anonymously = models.BooleanField(default=False)
+    medias = GenericRelation("util.Media", related_query_name="review")
+    rating = models.FloatField(
+        null=True,
+        help_text="Rating should be between 0.0 and 5.0",
+        validators=[MinValueValidator(0.0), MaxValueValidator(5.0), divisible_by_point_five],
+    )
+    reply_to = models.ForeignKey("self", on_delete=models.CASCADE, null=True, related_name="replies")
 
-	object_id = models.PositiveIntegerField()
-	content_type = models.ForeignKey(
-		ContentType, on_delete=models.CASCADE, related_name="reviews",
-		limit_choices_to={'model__in': ('room',)}
-	)
-	content_object = GenericForeignKey("content_type", "object_id")
-	medias = GenericRelation("util.Media", related_query_name="review")
+    object_id = models.PositiveIntegerField()
+    content_type = models.ForeignKey(
+        ContentType,
+        on_delete=models.CASCADE,
+        related_name="reviews",
+        limit_choices_to={"model__in": ("room",)},
+    )
+    content_object = GenericForeignKey("content_type", "object_id")
 
-	reply_to = models.ForeignKey(
-		"self", on_delete=models.CASCADE, null=True, related_name="replies"
-	)
-
-	class Meta:
-		unique_together = [
-			["created_by", "object_id", "content_type"],
-		]
-		ordering = ["-created_at"]
-		verbose_name_plural = "Reviews"
+    class Meta:
+        unique_together = [
+            ["created_by", "object_id", "content_type"],
+        ]
+        ordering = ["-created_at"]
+        verbose_name_plural = "Reviews"
 
 
 class QAndA(Modifiers):
-	comment = models.TextField()
-	post_anonymously = models.BooleanField(default=False)
+    comment = models.TextField()
+    post_anonymously = models.BooleanField(default=False)
+    medias = GenericRelation("util.Media", related_query_name="qna")
+    reply_to = models.ForeignKey("self", on_delete=models.CASCADE, null=True, related_name="replies")
 
-	object_id = models.PositiveIntegerField()
-	content_type = models.ForeignKey(
-		ContentType, on_delete=models.CASCADE, related_name="qnas",
-		limit_choices_to={'model__in': ('room',)}
-	)
-	content_object = GenericForeignKey("content_type", "object_id")
-	medias = GenericRelation("util.Media", related_query_name="qna")
+    object_id = models.PositiveIntegerField()
+    content_type = models.ForeignKey(
+        ContentType, on_delete=models.CASCADE, related_name="qnas", limit_choices_to={"model__in": ("room",)}
+    )
+    content_object = GenericForeignKey("content_type", "object_id")
 
-	reply_to = models.ForeignKey(
-		"self", on_delete=models.CASCADE, null=True, related_name="replies"
-	)
-
-	class Meta:
-		ordering = ["-created_at"]
-		verbose_name = "Q&A"
-		verbose_name_plural = "Q&As"
+    class Meta:
+        ordering = ["-created_at"]
+        verbose_name = "Q&A"
+        verbose_name_plural = "Q&As"

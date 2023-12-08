@@ -5,18 +5,18 @@ from util.models import Media
 
 
 class ListMediaSerializer(ModelSerializer):
-	class Meta:
-		model = Media
-		fields = ("id", "media")
+    class Meta:
+        model = Media
+        fields = ("id", "media")
 
 
 class MediaSerializer(ModelSerializer):
-	class Meta:
-		model = Media
-		fields = "__all__"
+    class Meta:
+        model = Media
+        fields = "__all__"
 
 
 class ContentTypeSerializer(ModelSerializer):
-	class Meta:
-		model = ContentType
-		fields = ("id", "name")
+    class Meta:
+        model = ContentType
+        fields = ("id", "name")

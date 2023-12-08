@@ -8,5 +8,5 @@ router.register(r"media", MediaViewSet, basename="media-admin")
 urlpatterns = router.urls
 
 urlpatterns += [
-	path("content-types/", ContentTypesView.as_view(), name="content-types"),
+    path("content-types/", ContentTypesView.as_view(), name="content-types"),
 ]
