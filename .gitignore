@@ -1,0 +1,16 @@
+# IDE caches
+.vscode
+.idea
+
+# Virtual env
+venv
+
+# Project env
+.env
+
+# DB
+db.sqlite3
+
+# Pycache
+__pycache__/
+**/*.pyc
