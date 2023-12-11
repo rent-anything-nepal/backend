@@ -1,5 +1,11 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from rest_condition import And, Or
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.viewsets import ModelViewSet
+
+from account.permissions import IsSuperUser
+from utils.permissions import IsMyProperty
 
 
 class Timestamp(models.Model):
@@ -58,8 +64,27 @@ class Location(models.Model):
     latitude = models.FloatField()
     longitude = models.FloatField()
     address = models.CharField(max_length=255)
+
     city = models.CharField(max_length=255)
+    district = models.CharField(max_length=255)
     province = models.CharField(max_length=255)
+
+    class Meta:
+        abstract = True
+
+
+class BaseViewSet(ModelViewSet):
+    def get_permissions(self):
+        if self.action in ["update", "partial_update", "destroy", "list", "retrieve"]:
+            self.permission_classes = [And(IsAuthenticated, Or(IsSuperUser, IsMyProperty))]
+        else:
+            self.permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(created_by=self.request.user)
+
+    def perform_update(self, serializer):
+        serializer.save(updated_by=self.request.user)
 
     class Meta:
         abstract = True

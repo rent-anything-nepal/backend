@@ -25,11 +25,10 @@ class Media(Modifiers):
         ContentType,
         on_delete=models.CASCADE,
         related_name="media",
-        limit_choices_to={"model__in": ("room", "review", "qanda")},
+        limit_choices_to={"model__in": ("room", "flat", "house", "review", "qanda")},
     )
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey("content_type", "object_id")
 
     class Meta:
         ordering = ["-created_at"]
-        verbose_name_plural = "Medias"

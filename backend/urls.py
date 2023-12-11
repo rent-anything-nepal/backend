@@ -10,9 +10,9 @@ urlpatterns = [
     path("", include("accommodation.urls")),
     path("", include("account.urls")),
     path("", include("review.urls")),
-    path("", include("util.urls")),
+    path("", include("media.urls")),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-urlpatterns += [re_path(r"^(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT})]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += [re_path(r"^(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT})]

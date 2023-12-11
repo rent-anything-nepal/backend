@@ -1,29 +1,21 @@
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.viewsets import ModelViewSet
-
 from review.models import Review, QAndA
-from review.serializer import ReviewSerializer, QAndASerializer
+from review.serializer import ReviewSerializer, QAndASerializer, ListReviewSerializer, ListQAndASerializer
+from utils.abstracts import BaseViewSet
 
 
-class ReviewViewSet(ModelViewSet):
-    queryset = Review.objects.all()
-    serializer_class = ReviewSerializer
-    permission_classes = [IsAuthenticated]
+class ReviewViewSet(BaseViewSet):
+    queryset = Review.objects.filter(reply_to__isnull=True)
 
-    def perform_create(self, serializer):
-        serializer.save(created_by=self.request.user)
-
-    def perform_update(self, serializer):
-        serializer.save(updated_by=self.request.user)
+    def get_serializer_class(self):
+        if self.action in ["create", "update", "partial_update", "destroy"]:
+            return ReviewSerializer
+        return ListReviewSerializer
 
 
-class QAndAViewSet(ModelViewSet):
-    queryset = QAndA.objects.all()
-    serializer_class = QAndASerializer
-    permission_classes = [IsAuthenticated]
+class QAndAViewSet(BaseViewSet):
+    queryset = QAndA.objects.filter(reply_to__isnull=True)
 
-    def perform_create(self, serializer):
-        serializer.save(created_by=self.request.user)
-
-    def perform_update(self, serializer):
-        serializer.save(updated_by=self.request.user)
+    def get_serializer_class(self):
+        if self.action in ["create", "update", "partial_update", "destroy"]:
+            return QAndASerializer
+        return ListQAndASerializer

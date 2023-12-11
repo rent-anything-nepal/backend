@@ -1,11 +1,11 @@
 from django.contrib.contenttypes.models import ContentType
-from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from media.models import Media
 from media.serializer import MediaSerializer, ContentTypeSerializer
+from utils.abstracts import BaseViewSet
 
 
 class ContentTypesView(APIView):
@@ -17,13 +17,6 @@ class ContentTypesView(APIView):
         return Response(serializer.data)
 
 
-class MediaViewSet(viewsets.ModelViewSet):
+class MediaViewSet(BaseViewSet):
     queryset = Media.objects.all()
     serializer_class = MediaSerializer
-    permission_classes = [IsAuthenticated]
-
-    def perform_create(self, serializer):
-        serializer.save(created_by=self.request.user)
-
-    def perform_update(self, serializer):
-        serializer.save(updated_by=self.request.user)

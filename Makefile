@@ -25,7 +25,7 @@ mm: ## Make migrations for a specific app
 migrations: ## Run thorough migrations of all available apps sequentially
 	make mm app=account
 	make mg
-	make mm app=util
+	make mm app=media
 	make mm app=accommodation
 	make mm app=review
 	make mg
@@ -50,7 +50,10 @@ admin: ## Create configured admin user
 		--noinput --settings=$(SETTINGS)
 
 clean-db: ## Clean database, media and static files
-	rm -rf media
+	cp assets/org org -r
+	rm -rf assets
+	mkdir assets
+	mv org assets/org
 	rm -rf static
 	rm -rf db.sqlite3
 

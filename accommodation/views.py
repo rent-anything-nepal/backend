@@ -1,26 +1,32 @@
+from rest_condition import And, Or
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 
-from accommodation.filters import ROOM_FILTERS, ROOM_SEARCH_FIELDS
-from accommodation.models import Room, Flat
+from accommodation.filters import *
+from accommodation.models import Room, Flat, House
 from accommodation.serializer import (
-    RoomSerializer,
-    RoomDetailSerializer,
-    FlatSerializer,
-    FlatDetailSerializer,
+    PublicRoomDetailSerializer,
+    PublicRoomListSerializer,
+    AdminRoomDetailSerializer,
+    AdminRoomListSerializer,
+    PublicFlatDetailSerializer,
+    PublicFlatListSerializer,
+    AdminFlatDetailSerializer,
+    AdminFlatListSerializer,
 )
+from account.permissions import IsSuperUser
+from utils.permissions import IsMyProperty
 
 
-class RoomViewSet(viewsets.ModelViewSet):
-    queryset = Room.objects.all()
-    permission_classes = [IsAuthenticated]
-    filterset_fields = ROOM_FILTERS
-    search_fields = ROOM_SEARCH_FIELDS
+class BaseAdminViewSet(viewsets.ModelViewSet):
+    search_fields = COMMON_SEARCH_FIELDS
 
-    def get_serializer_class(self):
-        if self.action == "retrieve":
-            return RoomDetailSerializer
-        return RoomSerializer
+    def get_permissions(self):
+        if self.action in ["create", "update", "partial_update", "destroy", "retrieve"]:
+            permission_classes = [And(IsAuthenticated, Or(IsSuperUser, IsMyProperty))]
+        else:
+            permission_classes = [And(IsAuthenticated, IsSuperUser)]
+        return [permission() for permission in permission_classes]
 
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user)
@@ -28,11 +34,17 @@ class RoomViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         serializer.save(updated_by=self.request.user)
 
+    class Meta:
+        abstract = True
 
-class RoomPublicViewSet(viewsets.ReadOnlyModelViewSet):
-    serializer_class = RoomSerializer
-    filterset_fields = ROOM_FILTERS
-    search_fields = ROOM_SEARCH_FIELDS
+
+class PublicRoomViewSet(viewsets.ReadOnlyModelViewSet):
+    filterset_class = RoomFilter
+
+    def get_serializer_class(self):
+        if self.action == "retrieve":
+            return PublicRoomDetailSerializer
+        return PublicRoomListSerializer
 
     def get_queryset(self):
         return Room.objects.filter(
@@ -41,31 +53,61 @@ class RoomPublicViewSet(viewsets.ReadOnlyModelViewSet):
         )
 
 
-class FlatViewSet(viewsets.ModelViewSet):
-    queryset = Flat.objects.all()
-    permission_classes = [IsAuthenticated]
-    filterset_fields = ROOM_FILTERS
-    search_fields = ROOM_SEARCH_FIELDS
+class AdminRoomViewSet(BaseAdminViewSet):
+    queryset = Room.objects.all()
+    filterset_class = RoomAdminFilter
 
     def get_serializer_class(self):
         if self.action == "retrieve":
-            return FlatDetailSerializer
-        return FlatSerializer
-
-    def perform_create(self, serializer):
-        serializer.save(created_by=self.request.user)
-
-    def perform_update(self, serializer):
-        serializer.save(updated_by=self.request.user)
+            return AdminRoomDetailSerializer
+        return AdminRoomListSerializer
 
 
-class FlatPublicViewSet(viewsets.ReadOnlyModelViewSet):
-    serializer_class = FlatSerializer
-    filterset_fields = ROOM_FILTERS
-    search_fields = ROOM_SEARCH_FIELDS
+class PublicFlatViewSet(viewsets.ReadOnlyModelViewSet):
+    filterset_class = FlatFilter
+
+    def get_serializer_class(self):
+        if self.action == "retrieve":
+            return PublicFlatDetailSerializer
+        return PublicFlatListSerializer
 
     def get_queryset(self):
         return Flat.objects.filter(
             is_booked=False,
             approval_status=True,
         )
+
+
+class AdminFlatViewSet(BaseAdminViewSet):
+    queryset = Flat.objects.all()
+    filterset_class = FlatAdminFilter
+
+    def get_serializer_class(self):
+        if self.action == "retrieve":
+            return AdminFlatDetailSerializer
+        return AdminFlatListSerializer
+
+
+class PublicHouseViewSet(viewsets.ReadOnlyModelViewSet):
+    filterset_class = HouseFilter
+
+    def get_serializer_class(self):
+        if self.action == "retrieve":
+            return PublicFlatDetailSerializer
+        return PublicFlatListSerializer
+
+    def get_queryset(self):
+        return House.objects.filter(
+            is_booked=False,
+            approval_status=True,
+        )
+
+
+class AdminHouseViewSet(BaseAdminViewSet):
+    queryset = House.objects.all()
+    filterset_class = HouseAdminFilter
+
+    def get_serializer_class(self):
+        if self.action == "retrieve":
+            return AdminFlatDetailSerializer
+        return AdminFlatListSerializer

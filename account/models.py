@@ -7,7 +7,7 @@ from django.utils import timezone
 from account.text_from_image import *
 from account.validators import validate_citizenship_number
 from backend.settings.base import RESET_PASSWORD_CODE_EXPIRE_TIME
-from media.models import Timestamp
+from utils.abstracts import Timestamp
 
 
 PROFILE_TYPE_CHOICES = ((1, "Seeker"), (2, "Owner"), (3, "Maintainer"))

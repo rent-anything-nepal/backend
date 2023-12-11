@@ -99,7 +99,6 @@ STATIC_URL = "/static/"
 MEDIA_URL = "/assets/"
 
 STATIC_ROOT = getenv("STATIC_ROOT") or BASE_DIR / "static/"
-
 MEDIA_ROOT = getenv("MEDIA_ROOT") or BASE_DIR / "assets/"
 
 # Default primary key field type
@@ -117,9 +116,11 @@ REST_FRAMEWORK = {
     # "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     # "PAGE_SIZE": os.getenv("PAGE_SIZE") or 10,
     "DEFAULT_FILTER_BACKENDS": (
-        "rest_framework.filters.SearchFilter",
         "django_filters.rest_framework.DjangoFilterBackend",
+        "rest_framework.filters.SearchFilter",
     ),
 }
+
+CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 RESET_PASSWORD_CODE_EXPIRE_TIME = getenv("RESET_PASSWORD_CODE_EXPIRE_TIME", 5)
