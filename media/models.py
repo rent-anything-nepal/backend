@@ -6,6 +6,7 @@ from django.contrib.contenttypes.models import ContentType
 
 from media.validators import validate_file_extension, validate_file_size
 from utils.abstracts import Modifiers
+from utils.helpers import check_if_object_id_exists
 
 
 def get_media_upload_to_path(instance, filename):
@@ -32,3 +33,6 @@ class Media(Modifiers):
 
     class Meta:
         ordering = ["-created_at"]
+
+    def clean(self) -> None:
+        check_if_object_id_exists(self)

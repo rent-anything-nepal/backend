@@ -15,6 +15,11 @@ class MediaSerializer(ModelSerializer):
         model = Media
         fields = "__all__"
 
+    def validate(self, data):
+        instance = Media(**data)
+        instance.clean()
+        return data
+
 
 class ContentTypeSerializer(ModelSerializer):
     class Meta:

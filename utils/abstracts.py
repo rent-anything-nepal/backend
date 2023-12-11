@@ -76,9 +76,10 @@ class Location(models.Model):
 class BaseViewSet(ModelViewSet):
     def get_permissions(self):
         if self.action in ["update", "partial_update", "destroy", "list", "retrieve"]:
-            self.permission_classes = [And(IsAuthenticated, Or(IsSuperUser, IsMyProperty))]
+            permission_classes = [And(IsAuthenticated, Or(IsSuperUser, IsMyProperty))]
         else:
-            self.permission_classes = [IsAuthenticated]
+            permission_classes = [IsAuthenticated]
+        return [permission() for permission in permission_classes]
 
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user)

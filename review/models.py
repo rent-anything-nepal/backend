@@ -4,6 +4,8 @@ from review.validators import divisible_by_point_five
 from media.models import Modifiers, models, ContentType
 from django.core.validators import MinValueValidator, MaxValueValidator
 
+from utils.helpers import check_if_object_id_exists
+
 
 class Review(Modifiers):
     comment = models.TextField()
@@ -31,6 +33,9 @@ class Review(Modifiers):
         ]
         ordering = ["-created_at"]
 
+    def clean(self) -> None:
+        check_if_object_id_exists(self)
+
 
 class QAndA(Modifiers):
     comment = models.TextField()
@@ -49,3 +54,6 @@ class QAndA(Modifiers):
 
     class Meta:
         ordering = ["-created_at"]
+
+    def clean(self) -> None:
+        check_if_object_id_exists(self)

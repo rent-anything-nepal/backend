@@ -4,11 +4,15 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils import timezone
 
-from account.text_from_image import *
 from account.validators import validate_citizenship_number
 from backend.settings.base import RESET_PASSWORD_CODE_EXPIRE_TIME
 from utils.abstracts import Timestamp
-
+from utils.helpers import (
+    scan_image_for_text,
+    validate_presence_of_nepal_government_text,
+    get_citizenship_number,
+    get_full_name,
+)
 
 PROFILE_TYPE_CHOICES = ((1, "Seeker"), (2, "Owner"), (3, "Maintainer"))
 

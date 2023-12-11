@@ -1,4 +1,4 @@
-from rest_framework.serializers import ModelSerializer, SerializerMethodField
+from rest_framework.serializers import ModelSerializer, SerializerMethodField, ValidationError
 
 from review.models import Review, QAndA
 from media.serializer import ListMediaSerializer
@@ -8,6 +8,11 @@ class ReviewSerializer(ModelSerializer):
     class Meta:
         model = Review
         fields = "__all__"
+
+    def validate(self, data):
+        instance = Review(**data)
+        instance.clean()
+        return data
 
 
 class ListReviewSerializer(ModelSerializer):
@@ -26,6 +31,11 @@ class QAndASerializer(ModelSerializer):
     class Meta:
         model = QAndA
         fields = "__all__"
+
+    def validate(self, data):
+        instance = QAndA(**data)
+        instance.clean()
+        return data
 
 
 class ListQAndASerializer(ModelSerializer):

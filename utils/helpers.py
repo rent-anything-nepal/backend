@@ -2,6 +2,13 @@ import re
 import pytesseract
 from PIL import Image, ImageFilter
 
+from rest_framework.exceptions import ValidationError
+
+
+def check_if_object_id_exists(self):
+    if not self.content_type.model_class().objects.filter(id=self.object_id).exists():
+        raise ValidationError({"object_id": ["Does not exist"]})
+
 
 def scan_image_for_text(path):
     image = Image.open(path)
