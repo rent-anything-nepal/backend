@@ -1,7 +1,7 @@
 from django.contrib.contenttypes.models import ContentType
 from rest_framework.serializers import ModelSerializer
 
-from util.models import Media
+from media.models import Media
 
 
 class ListMediaSerializer(ModelSerializer):

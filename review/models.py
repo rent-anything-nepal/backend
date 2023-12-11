@@ -1,7 +1,7 @@
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 
 from review.validators import divisible_by_point_five
-from util.models import Modifiers, models, ContentType
+from media.models import Modifiers, models, ContentType
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 

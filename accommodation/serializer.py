@@ -1,7 +1,7 @@
 from rest_framework.serializers import ModelSerializer, SerializerMethodField
 
 from accommodation.models import Room, Flat
-from util.serializer import ListMediaSerializer
+from media.serializer import ListMediaSerializer
 from review.serializer import ListReviewSerializer, ListQAndASerializer
 
 

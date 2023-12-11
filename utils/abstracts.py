@@ -1,9 +1,5 @@
-from django.contrib.auth import get_user_model
-from django.contrib.contenttypes.fields import GenericForeignKey
 from django.db import models
-from django.contrib.contenttypes.models import ContentType
-
-from util.helper import get_media_upload_to_path, validate_file_extension, validate_file_size
+from django.contrib.auth import get_user_model
 
 
 class Timestamp(models.Model):
@@ -67,25 +63,3 @@ class Location(models.Model):
 
     class Meta:
         abstract = True
-
-
-class Media(Modifiers):
-    media = models.FileField(
-        upload_to=get_media_upload_to_path,
-        validators=[validate_file_extension, validate_file_size],
-    )
-    caption = models.CharField(max_length=255, blank=True)
-    alt_text = models.CharField(max_length=255, blank=True)
-
-    content_type = models.ForeignKey(
-        ContentType,
-        on_delete=models.CASCADE,
-        related_name="media",
-        limit_choices_to={"model__in": ("room", "review", "qanda")},
-    )
-    object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey("content_type", "object_id")
-
-    class Meta:
-        ordering = ["-created_at"]
-        verbose_name_plural = "Medias"

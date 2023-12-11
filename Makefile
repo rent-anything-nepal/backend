@@ -23,8 +23,8 @@ mm: ## Make migrations for a specific app
 	$(PYTHON) manage.py makemigrations $(app) --settings=$(SETTINGS)
 
 migrations: ## Run thorough migrations of all available apps sequentially
-	$(PYTHON) manage.py makemigrations --settings=$(SETTINGS)
-	$(PYTHON) manage.py migrate --settings=$(SETTINGS)
+	make mm app=account
+	make mg
 	make mm app=util
 	make mm app=accommodation
 	make mm app=review

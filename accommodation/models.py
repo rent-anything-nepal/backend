@@ -1,7 +1,7 @@
 from django.contrib.contenttypes.fields import GenericRelation
 
 from accommodation.abstracts import *
-from util.models import Location, PinStatus, ApprovalStatus, Modifiers
+from media.models import Location, PinStatus, ApprovalStatus, Modifiers
 
 
 class Room(

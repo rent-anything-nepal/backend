@@ -3,7 +3,12 @@ from rest_framework.permissions import IsAuthenticated
 
 from accommodation.filters import ROOM_FILTERS, ROOM_SEARCH_FIELDS
 from accommodation.models import Room, Flat
-from accommodation.serializer import RoomSerializer, RoomDetailSerializer, FlatSerializer, FlatDetailSerializer
+from accommodation.serializer import (
+    RoomSerializer,
+    RoomDetailSerializer,
+    FlatSerializer,
+    FlatDetailSerializer,
+)
 
 
 class RoomViewSet(viewsets.ModelViewSet):

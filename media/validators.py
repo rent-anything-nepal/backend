@@ -6,12 +6,6 @@ VALID_IMAGE_EXTENSIONS = [".jpg", ".jpeg", ".png"]
 VALID_VIDEO_EXTENSIONS = [".mp4"]
 
 
-def get_media_upload_to_path(instance, filename):
-    ext = filename.split(".")[-1]
-    random_filename = f"{uuid4()}.{ext}"
-    return f"media/{instance.content_type}/{instance.object_id}/{random_filename}"
-
-
 def validate_file_extension(value):
     ext = splitext(value.name)[1]
     valid_extensions = VALID_IMAGE_EXTENSIONS + VALID_VIDEO_EXTENSIONS

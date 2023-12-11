@@ -14,3 +14,11 @@ db.sqlite3
 # Pycache
 __pycache__/
 **/*.pyc
+
+
+#Assets
+static/
+#only include the org folder in assets
+!assets/
+assets/*
+!assets/org

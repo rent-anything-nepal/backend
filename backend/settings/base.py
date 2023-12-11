@@ -22,9 +22,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # third party apps
     "rest_framework",
+    "rest_framework.authtoken",
     "django_filters",
-    "util",
+    # user defined apps
+    "account",
+    "media",
     "accommodation",
     "review",
 ]
@@ -91,12 +95,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = "static/"
-MEDIA_URL = "/media/"
+STATIC_URL = "/static/"
+MEDIA_URL = "/assets/"
 
 STATIC_ROOT = getenv("STATIC_ROOT") or BASE_DIR / "static/"
 
-MEDIA_ROOT = getenv("MEDIA_ROOT") or BASE_DIR / "media/"
+MEDIA_ROOT = getenv("MEDIA_ROOT") or BASE_DIR / "assets/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -105,8 +109,17 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.TokenAuthentication",
         "rest_framework.authentication.BasicAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    # "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    # "PAGE_SIZE": os.getenv("PAGE_SIZE") or 10,
+    "DEFAULT_FILTER_BACKENDS": (
+        "rest_framework.filters.SearchFilter",
+        "django_filters.rest_framework.DjangoFilterBackend",
+    ),
 }
+
+RESET_PASSWORD_CODE_EXPIRE_TIME = getenv("RESET_PASSWORD_CODE_EXPIRE_TIME", 5)

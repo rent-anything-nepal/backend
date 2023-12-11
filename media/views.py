@@ -4,8 +4,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from util.models import Media
-from util.serializer import MediaSerializer, ContentTypeSerializer
+from media.models import Media
+from media.serializer import MediaSerializer, ContentTypeSerializer
 
 
 class ContentTypesView(APIView):

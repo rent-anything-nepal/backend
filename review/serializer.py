@@ -1,7 +1,7 @@
 from rest_framework.serializers import ModelSerializer, SerializerMethodField
 
 from review.models import Review, QAndA
-from util.serializer import ListMediaSerializer
+from media.serializer import ListMediaSerializer
 
 
 class ReviewSerializer(ModelSerializer):
