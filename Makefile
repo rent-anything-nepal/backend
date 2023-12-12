@@ -27,7 +27,7 @@ migrations: ## Run thorough migrations of all available apps sequentially
 	make mg
 	make mm app=media
 	make mm app=accommodation
-	make mm app=review
+	make mm app=insight
 	make mg
 
 dev: ## Run development server

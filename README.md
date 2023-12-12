@@ -1,6 +1,6 @@
-# Welcome to Rent Anything Nepal 🏠🚗
+# Welcome to RentShare Nepal 🏠🚗
 
-Rent Anything Nepal is your go-to platform for effortlessly renting a diverse range of items in Nepal.
+RentShare Nepal is your go-to platform for effortlessly renting a diverse range of items in Nepal.
 
 ## Why Choose Us?
 - 🤝 No intermediaries
@@ -31,4 +31,4 @@ To access room rental details or register for renting a room, we kindly request 
 - **Virtual Roommate Matching:** Connect with potential roommates based on shared interests.
 - **Move-in Concierge Service:** Get assistance with moving in, setting up utilities, and connecting to local resources.
 
-Your satisfaction is our priority at Rent Anything Nepal. 🌟 Feel free to explore and make the most of our user-friendly platform.
+Your satisfaction is our priority at RentShare Nepal. 🌟 Feel free to explore and make the most of our user-friendly platform.

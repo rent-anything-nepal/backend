@@ -1,5 +1,3 @@
-from django.contrib.contenttypes.fields import GenericRelation
-
 from accommodation.abstracts import *
 from accommodation.validators import validate_created_by
 from utils.abstracts import Location, PinStatus, ApprovalStatus, Modifiers
@@ -18,6 +16,7 @@ class Room(
     Location,
     ApprovalStatus,
     PinStatus,
+    GenericRelations
 ):
     name = models.CharField(
         max_length=255,
@@ -27,11 +26,6 @@ class Room(
     floor_level = models.PositiveIntegerField()
     with_kitchen_setup = models.BooleanField(default=False)
     owner_lives_in_same_building = models.BooleanField(default=True)
-
-    # relations
-    medias = GenericRelation("media.Media", related_query_name="room")
-    reviews = GenericRelation("review.Review", related_query_name="room")
-    qnas = GenericRelation("review.QAndA", related_query_name="room")
 
     class Meta:
         ordering = ["-created_at"]
@@ -54,6 +48,7 @@ class Flat(
     ApprovalStatus,
     PinStatus,
     FlatAttributes,
+    GenericRelations
 ):
     name = models.CharField(
         max_length=255,
@@ -65,11 +60,6 @@ class Flat(
     with_kitchen = models.BooleanField(default=True)
     owner_lives_in_same_building = models.BooleanField(default=True)
     for_office_use_only = models.BooleanField(default=False)
-
-    # relations
-    medias = GenericRelation("media.Media", related_query_name="flat")
-    reviews = GenericRelation("review.Review", related_query_name="flat")
-    qnas = GenericRelation("review.QAndA", related_query_name="flat")
 
     class Meta:
         ordering = ["-created_at"]
@@ -92,6 +82,7 @@ class House(
     FlatAttributes,
     SmartFeatures,
     HouseAmenities,
+    GenericRelations
 ):
     name = models.CharField(
         max_length=255,
@@ -103,11 +94,6 @@ class House(
     for_office_use_only = models.BooleanField(default=False)
     with_customizable_option = models.BooleanField(default=False)
     post_move_in_support = models.BooleanField(default=False)
-
-    # relations
-    medias = GenericRelation("media.Media", related_query_name="house")
-    reviews = GenericRelation("review.Review", related_query_name="house")
-    qnas = GenericRelation("review.QAndA", related_query_name="house")
 
     class Meta:
         ordering = ["-created_at"]

@@ -3,13 +3,14 @@ from rest_framework.serializers import ModelSerializer, SerializerMethodField
 from accommodation.filters import EXCLUDED_FIELDS_FOR_PUBLIC
 from accommodation.models import Room, Flat, House
 from media.serializer import ListMediaSerializer
-from review.serializer import ListReviewSerializer, ListQAndASerializer
+from insight.serializer import ListReviewSerializer, ListQAndASerializer, RuleSerializer
 
 
 class BaseCompleteSerializer(ModelSerializer):
     medias = ListMediaSerializer(many=True, read_only=True)
     reviews = SerializerMethodField()
     qnas = SerializerMethodField()
+    rules = RuleSerializer(many=True)
 
     def get_reviews(self, obj):
         return ListReviewSerializer(obj.reviews.filter(reply_to=None), many=True).data

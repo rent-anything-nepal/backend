@@ -1,3 +1,4 @@
+from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 
 from accommodation.choices import *
@@ -130,6 +131,16 @@ class HouseAmenities(models.Model):
     with_pool = models.BooleanField(default=False)
     with_gym = models.BooleanField(default=False)
     with_fireplace = models.BooleanField(default=False)
+
+    class Meta:
+        abstract = True
+
+
+class GenericRelations(models.Model):
+    medias = GenericRelation("media.Media", related_name="%(class)s", related_query_name="%(class)ss")
+    reviews = GenericRelation("insight.Review", related_name="%(class)s", related_query_name="%(class)ss")
+    qnas = GenericRelation("insight.QAndA", related_name="%(class)s", related_query_name="%(class)ss")
+    rules = GenericRelation("insight.Rule", related_name="%(class)s", related_query_name="%(class)ss")
 
     class Meta:
         abstract = True

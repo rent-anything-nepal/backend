@@ -1,6 +1,6 @@
-from rest_framework.serializers import ModelSerializer, SerializerMethodField, ValidationError
+from rest_framework.serializers import ModelSerializer, SerializerMethodField
 
-from review.models import Review, QAndA
+from insight.models import Review, QAndA, Rule
 from media.serializer import ListMediaSerializer
 
 
@@ -48,3 +48,9 @@ class ListQAndASerializer(ModelSerializer):
     class Meta:
         model = QAndA
         exclude = ("content_type", "object_id")
+
+
+class RuleSerializer(ModelSerializer):
+    class Meta:
+        model = Rule
+        fields = "__all__"
