@@ -19,9 +19,3 @@ class MediaSerializer(ModelSerializer):
         instance = Media(**data)
         instance.clean()
         return data
-
-
-class ContentTypeSerializer(ModelSerializer):
-    class Meta:
-        model = ContentType
-        fields = ("id", "name")

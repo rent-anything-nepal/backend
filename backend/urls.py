@@ -11,6 +11,7 @@ urlpatterns = [
     path("", include("account.urls")),
     path("", include("insight.urls")),
     path("", include("media.urls")),
+    path("", include("location.urls")),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     "django_filters",
     # user defined apps
     "account",
+    "location",
     "media",
     "accommodation",
     "insight",

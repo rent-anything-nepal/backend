@@ -23,6 +23,7 @@ mm: ## Make migrations for a specific app
 	$(PYTHON) manage.py makemigrations $(app) --settings=$(SETTINGS)
 
 migrations: ## Run thorough migrations of all available apps sequentially
+	make mm app=location
 	make mm app=account
 	make mg
 	make mm app=media
@@ -64,6 +65,9 @@ clean: clean-db clean-mg ## Clean db related files and migration files
 
 black: ## Run black
 	black .
+
+load-locations: ## Load locations
+	$(PYTHON) manage.py load_locations --settings=$(SETTINGS)
 
 help: ## Display this help screen
 	@echo
