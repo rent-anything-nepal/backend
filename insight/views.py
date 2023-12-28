@@ -1,7 +1,12 @@
 from django_filters import rest_framework as filters
 from insight.models import Review, QAndA, Rule
-from insight.serializer import ReviewSerializer, QAndASerializer, ListReviewSerializer, ListQAndASerializer, \
-    RuleSerializer
+from insight.serializer import (
+    ReviewSerializer,
+    QAndASerializer,
+    ListReviewSerializer,
+    ListQAndASerializer,
+    RuleSerializer,
+)
 from utils.abstracts import BaseViewSet
 
 

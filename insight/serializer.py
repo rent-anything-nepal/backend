@@ -1,6 +1,6 @@
 from rest_framework.serializers import ModelSerializer, SerializerMethodField
 
-from insight.models import Review, QAndA, Rule
+from insight.models import Review, QAndA, Rule, BookingRequest
 from media.serializer import ListMediaSerializer
 
 
@@ -53,4 +53,10 @@ class ListQAndASerializer(ModelSerializer):
 class RuleSerializer(ModelSerializer):
     class Meta:
         model = Rule
+        fields = "__all__"
+
+
+class BookingRequestSerializer(ModelSerializer):
+    class Meta:
+        model = BookingRequest
         fields = "__all__"

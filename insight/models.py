@@ -1,5 +1,7 @@
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
+from django.contrib.auth import get_user_model
 
+from accommodation.validators import validate_only_future_dates
 from insight.helpers import divisible_by_point_five
 from media.models import Modifiers, models, ContentType
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -56,6 +58,7 @@ class QAndA(Modifiers, BaseGenericKey):
 
 
 class Rule(Modifiers, BaseGenericKey):
+    title = models.CharField(max_length=255, unique=True)
     content = models.TextField()
 
     def clean(self) -> None:
@@ -63,6 +66,37 @@ class Rule(Modifiers, BaseGenericKey):
 
     class Meta:
         ordering = ["-created_at"]
+        unique_together = [["content", "object_id", "content_type"]]
+
+
+class BookingRequest(Modifiers, BaseGenericKey):
+    start_date = models.DateField(validators=[validate_only_future_dates])
+    rent_price = models.FloatField()
+    message = models.TextField(null=True)
+    start_date_range_to = models.DateField(null=True, validators=[validate_only_future_dates])
+
+    is_accepted = models.BooleanField(default=False)
+    accepted_at = models.DateTimeField(null=True, editable=False)
+    accepted_by = models.ForeignKey(
+        get_user_model(),
+        on_delete=models.SET_NULL,
+        null=True,
+        editable=False,
+        related_name="%(class)s_acceptances",
+    )
+
+    class Meta:
+        ordering = ["-created_at"]
         unique_together = [
-            ["content", "object_id", "content_type"]
+            ["object_id", "content_type", "created_by"],
         ]
+
+
+class Cancellation(Modifiers):
+    reason = models.TextField(null=True)
+    booking_request = models.OneToOneField(
+        BookingRequest, on_delete=models.CASCADE, related_name="cancel_booking_request"
+    )
+
+    class Meta:
+        ordering = ["-created_at"]
