@@ -1,11 +1,14 @@
 from django_filters import rest_framework as filters
-from insight.models import Review, QAndA, Rule
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from insight.models import Review, QAndA, Rule, SavedSearch
 from insight.serializer import (
     ReviewSerializer,
     QAndASerializer,
     ListReviewSerializer,
     ListQAndASerializer,
-    RuleSerializer,
+    RuleSerializer, SavedSearchSerializer,
 )
 from utils.abstracts import BaseViewSet
 
@@ -45,3 +48,20 @@ class RuleViewSet(BaseViewSet):
     serializer_class = RuleSerializer
     search_fields = ["content"]
     filterset_fields = ["object_id", "content_type"]
+
+
+class SavedSearchView(APIView):
+    def post(self, request):
+        serializer = SavedSearchSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(
+            ip_address=self.request.META.get("HTTP_X_FORWARDED_FOR", self.request.META.get("REMOTE_ADDR"))
+        )
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def get(self, request):
+        saved_searches = SavedSearch.objects.filter(
+            ip_address=self.request.META.get("HTTP_X_FORWARDED_FOR", self.request.META.get("REMOTE_ADDR"))
+        )
+        serializer = SavedSearchSerializer(saved_searches, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

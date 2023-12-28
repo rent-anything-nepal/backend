@@ -100,3 +100,18 @@ class Cancellation(Modifiers):
 
     class Meta:
         ordering = ["-created_at"]
+
+
+class SavedSearch(models.Model):
+    input = models.CharField(max_length=255)
+    params = models.JSONField()
+    ip_address = models.GenericIPAddressField(null=True, editable=False)
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+        unique_together = [
+            ["input", "params", "user"],
+            ["input", "params", "ip_address"]
+        ]
