@@ -20,17 +20,17 @@ COMMON_FILTERS = [
     "minimum_stay",
     "wheelchair_accessible",
     "elevator_access",
-    "pets_allowed",
-    "smoking_allowed",
-    "only_couples_allowed",
+    "no_smoking",
+    "only_family",
     "security_guard",
     "cctv",
     "fire_alarm",
     "fire_extinguisher",
     "noise_level",
-    "city",
-    "district",
-    "province",
+    "ward",
+    "ward__municipality",
+    "ward__municipality__district",
+    "ward__municipality__district__province",
 ]
 AMENITIES_FILTERS = [
     "tv",
@@ -83,8 +83,8 @@ HOUSE_FILTERS = [
     "with_fireplace",
     "for_office_use_only",
 ] + COMMON_FILTERS
+
 ADMIN_FILTERS = [
-    "is_booked",
     "is_approved",
     "is_pinned",
     "my_own_asset",
@@ -102,9 +102,6 @@ COMMON_SEARCH_FIELDS = [
     "owner_full_name",
     "owner_contact_number",
     "address",
-    "city",
-    "district",
-    "province",
     "created_by__username",
     "created_by__first_name",
     "created_by__last_name",
@@ -114,7 +111,7 @@ COMMON_SEARCH_FIELDS = [
 class AccommodationBaseFilter(filters.FilterSet):
     rent_price = filters.RangeFilter()
     security_deposit = filters.RangeFilter()
-    availability_calendar = filters.DateFromToRangeFilter()
+    # availability_calendar = filters.DateFromToRangeFilter()
 
 
 class RoomAdminFilter(AccommodationBaseFilter):

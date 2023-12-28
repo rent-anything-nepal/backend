@@ -6,7 +6,7 @@ def validate_dimension_format(value):
     """
     Validates the format of the dimension field.
     """
-    if not re_match(r"^\d+\s*x\s*\d+$", value):
+    if not re_match(r"^\d+\sX\s\d+$", value):
         raise ValidationError("Dimension format should be in the form of 'Width x Length'")
 
 
@@ -26,3 +26,13 @@ def validate_created_by(instance):
         raise ValidationError("Owner's full name and contact number are required if you don't own the asset.")
     if self.my_own_asset and self.created_by.profile.is_profile_verified is False:
         raise ValidationError("You need to verify your profile before adding your own asset.")
+
+
+def validate_only_future_dates(value):
+    """
+    Validates that the date is not in the past.
+    """
+    from datetime import date
+
+    if value < date.today():
+        raise ValidationError("Date cannot be in the past.")

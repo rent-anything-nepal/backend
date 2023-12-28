@@ -9,11 +9,9 @@ class BasicInformation(models.Model):
     description = models.TextField()
     max_occupancy = models.PositiveIntegerField()
     rent_price = models.PositiveIntegerField(help_text="Price per month in Nepali Rupees")
-    availability_calendar = models.DateField()
-    is_booked = models.BooleanField(default=False)
     rental_type = models.IntegerField(choices=RENTAL_TYPE_CHOICES)
     square_footage = models.CharField(
-        max_length=255, blank=True, help_text="Width x Length in feet", validators=[validate_dimension_format]
+        max_length=255, blank=True, help_text="LengthXBreadth in feet", validators=[validate_dimension_format]
     )
     natural_light = models.IntegerField(choices=NATURAL_LIGHT_CHOICES, default=1)
     security_deposit = models.PositiveIntegerField(default=0)
@@ -44,6 +42,7 @@ class Bathroom(models.Model):
     bathroom_type = models.IntegerField(choices=BATHROOM_TYPE_CHOICES)
     with_shower = models.BooleanField(default=False)
     with_bathtub = models.BooleanField(default=False)
+    hot_water = models.BooleanField(default=False)
 
     class Meta:
         abstract = True
@@ -59,8 +58,10 @@ class Accessibility(models.Model):
 
 class Restrictions(models.Model):
     pets_allowed = models.BooleanField(default=False)
-    smoking_allowed = models.BooleanField(default=False)
-    only_couples_allowed = models.BooleanField(default=False)
+    no_smoking = models.BooleanField(default=False)
+    only_family = models.BooleanField(default=False)
+    only_girls = models.BooleanField(default=False)
+    only_vegan = models.BooleanField(default=False)
     age_restriction = models.PositiveIntegerField(blank=True, null=True, help_text="Minimum age in years")
 
     class Meta:
@@ -100,6 +101,10 @@ class OwnerInformation(models.Model):
 
 
 class SmartFeatures(models.Model):
+    """
+    TBD: where to use,
+    most probably in flat, office type or house
+    """
     smart_tv = models.BooleanField(default=False)
     smart_lighting = models.BooleanField(default=False)
     smart_lock = models.BooleanField(default=False)
@@ -141,6 +146,9 @@ class GenericRelations(models.Model):
     reviews = GenericRelation("insight.Review", related_name="%(class)s", related_query_name="%(class)ss")
     qnas = GenericRelation("insight.QAndA", related_name="%(class)s", related_query_name="%(class)ss")
     rules = GenericRelation("insight.Rule", related_name="%(class)s", related_query_name="%(class)ss")
+    booking_requests = GenericRelation(
+        "insight.BookingRequest", related_name="%(class)s", related_query_name="%(class)ss"
+    )
 
     class Meta:
         abstract = True

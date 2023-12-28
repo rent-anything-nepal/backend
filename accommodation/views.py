@@ -1,6 +1,7 @@
 from rest_condition import And, Or
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
+from django.db.models import Q, Count
 
 from accommodation.filters import *
 from accommodation.models import Room, Flat, House
@@ -47,10 +48,12 @@ class PublicRoomViewSet(viewsets.ReadOnlyModelViewSet):
         return PublicRoomListSerializer
 
     def get_queryset(self):
-        return Room.objects.filter(
-            is_booked=False,
-            approval_status=True,
-        )
+        return Room.object.annotate(
+            accepted_booking_requests=Count(
+                "booking_requests",
+                filter=Q(booking_request__is_accepted=True),
+            )
+        ).filter(accepted_booking_requests=0, is_approved=True)
 
 
 class AdminRoomViewSet(BaseAdminViewSet):

@@ -1,6 +1,7 @@
 BATHROOM_TYPE_CHOICES = (
     (1, "Attached"),
     (2, "Shared"),
+    (2, "Private"),
 )
 
 PARKING_FACILITY_CHOICES = (

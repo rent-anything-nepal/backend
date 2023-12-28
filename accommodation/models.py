@@ -3,21 +3,18 @@ from accommodation.validators import validate_created_by
 from utils.abstracts import Location, PinStatus, ApprovalStatus, Modifiers
 
 
-class Room(
-    BasicInformation,
-    Amenities,
-    Bathroom,
-    Accessibility,
-    Restrictions,
-    Security,
-    Neighbourhood,
-    OwnerInformation,
-    Modifiers,
-    Location,
-    ApprovalStatus,
-    PinStatus,
+class Accommodation(
+    BasicInformation, Amenities, Bathroom,
+    Accessibility, Restrictions, Security,
+    Neighbourhood, OwnerInformation, Modifiers,
+    Location, ApprovalStatus, PinStatus,
     GenericRelations
 ):
+    class Meta:
+        abstract = True
+
+
+class Room(Accommodation):
     name = models.CharField(
         max_length=255,
         blank=True,
@@ -34,22 +31,7 @@ class Room(
         validate_created_by(self)
 
 
-class Flat(
-    BasicInformation,
-    Amenities,
-    Bathroom,
-    Accessibility,
-    Restrictions,
-    Security,
-    Neighbourhood,
-    OwnerInformation,
-    Modifiers,
-    Location,
-    ApprovalStatus,
-    PinStatus,
-    FlatAttributes,
-    GenericRelations
-):
+class Flat(Accommodation, FlatAttributes):
     name = models.CharField(
         max_length=255,
         blank=True,
@@ -68,22 +50,7 @@ class Flat(
         validate_created_by(self)
 
 
-class House(
-    BasicInformation,
-    Accessibility,
-    Restrictions,
-    Security,
-    Neighbourhood,
-    OwnerInformation,
-    Modifiers,
-    Location,
-    ApprovalStatus,
-    PinStatus,
-    FlatAttributes,
-    SmartFeatures,
-    HouseAmenities,
-    GenericRelations
-):
+class House(Accommodation, HouseAmenities, FlatAttributes):
     name = models.CharField(
         max_length=255,
         blank=True,
