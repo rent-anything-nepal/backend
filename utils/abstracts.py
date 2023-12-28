@@ -65,9 +65,7 @@ class Location(models.Model):
     longitude = models.FloatField()
     address = models.CharField(max_length=255)
 
-    city = models.CharField(max_length=255)
-    district = models.CharField(max_length=255)
-    province = models.CharField(max_length=255)
+    ward = models.ForeignKey("location.Ward", on_delete=models.CASCADE)
 
     class Meta:
         abstract = True
